@@ -42,35 +42,35 @@ public class Validate {
         private static final String DEFAULT_IS_ASSIGNABLE_EX_MESSAGE = "Cannot assign a %s to a %s";
         private static final String DEFAULT_IS_INSTANCE_OF_EX_MESSAGE = "Expected type: %s, actual: %s";
 	
-    /**
-     * <p>ÑéÖ¤Ö¸¶¨µÄ²ÎÊı²»Îª {@code null};
-     * ·ñÔòÅ×³öÒ»¸öÒì³£.
-     *
-     * <pre>Validate.notNull(myObject, "The object must not be null");</pre>
-     *
-     * @param <T> ¶ÔÏóÀàĞÍ
-     * @param object  ĞèÒª¼ì²âµÄ¶ÔÏó
-     * @return ±»ÑéÖ¤µÄ¶ÔÏó (µ÷ÓÃ·½·¨Á´ÖĞÓÀÔ¶²»Îª {@code null})
-     * @throws NullPointerException Èç¹û¶ÔÏóÎª {@code null}
-     * @see #notNull(Object, String, Object...)
-     */
+	/**
+	 * <p>éªŒè¯æŒ‡å®šçš„å‚æ•°ä¸ä¸º {@code null};
+	 * å¦åˆ™æŠ›å‡ºä¸€ä¸ªå¼‚å¸¸.
+	 *
+	 * <pre>Validate.notNull(myObject, "The object must not be null");</pre>
+	 *
+	 * @param <T> å¯¹è±¡ç±»å‹
+	 * @param object  éœ€è¦æ£€æµ‹çš„å¯¹è±¡
+	 * @return è¢«éªŒè¯çš„å¯¹è±¡ (è°ƒç”¨æ–¹æ³•é“¾ä¸­æ°¸è¿œä¸ä¸º {@code null})
+	 * @throws NullPointerException å¦‚æœå¯¹è±¡ä¸º {@code null}
+	 * @see #notNull(Object, String, Object...)
+	 */
     public static <T> T notNull(final T object) {
         return notNull(object, DEFAULT_IS_NULL_EX_MESSAGE);
     }
     
 
     /**
-     * <p>ÑéÖ¤Ö¸¶¨µÄ²ÎÊı²»Îª {@code null};
-     * ·ñÔòÅ×³öÒ»¸ö¸½¼ÓÖ¸¶¨ĞÅÏ¢µÄÒì³£.
+     * <p>éªŒè¯æŒ‡å®šçš„å‚æ•°ä¸ä¸º {@code null};
+     * å¦åˆ™æŠ›å‡ºä¸€ä¸ªé™„åŠ æŒ‡å®šä¿¡æ¯çš„å¼‚å¸¸.
      *
      * <pre>Validate.notNull(myObject, "The object must not be null");</pre>
      *
-     * @param <T> ¶ÔÏóÀàĞÍ
-     * @param object  ĞèÒª¼ì²âµÄ¶ÔÏó
-     * @param message  ¼ì²âÎª{@code null}¶ÔÏóÅ×³öµÄÏûÏ¢, ¸Ã²ÎÊı²»ÄÜÎªnull
-     * @param values  ¸ñÊ½»¯µÄÒì³£ÏûÏ¢£¨¿ÉÑ¡£©
-     * @return ±»ÑéÖ¤µÄ¶ÔÏó (µ÷ÓÃ·½·¨Á´ÖĞÓÀÔ¶²»Îª {@code null})
-     * @throws NullPointerException Èç¹û¶ÔÏóÎª {@code null}
+     * @param <T> å¯¹è±¡ç±»å‹
+     * @param object  éœ€è¦æ£€æµ‹çš„å¯¹è±¡
+     * @param message  æ£€æµ‹ä¸º{@code null}å¯¹è±¡æŠ›å‡ºçš„æ¶ˆæ¯, è¯¥å‚æ•°ä¸èƒ½ä¸ºnull
+     * @param values  æ ¼å¼åŒ–çš„å¼‚å¸¸æ¶ˆæ¯ï¼ˆå¯é€‰ï¼‰
+     * @return è¢«éªŒè¯çš„å¯¹è±¡ (è°ƒç”¨æ–¹æ³•é“¾ä¸­æ°¸è¿œä¸ä¸º {@code null})
+     * @throws NullPointerException å¦‚æœå¯¹è±¡ä¸º {@code null}
      * @see #notNull(Object)
      */
     public static <T> T notNull(final T object, final String message, final Object... values) {
@@ -84,18 +84,18 @@ public class Validate {
     //---------------------------------------------------------------------------------
 
     /**
-     * <p>ÑéÖ¤Ö¸¶¨µÄÊı×é²ÎÊı²»ÄÜÎª{@code null}Ò²²»ÄÜ³¤¶ÈÎªÁã£»
-     * ·ñÔò½«Å×³öÒ»¸ö¸½¼ÓÖ¸¶¨ÏûÏ¢µÄÒì³£.
+     * <p>éªŒè¯æŒ‡å®šçš„æ•°ç»„å‚æ•°ä¸èƒ½ä¸º{@code null}ä¹Ÿä¸èƒ½é•¿åº¦ä¸ºé›¶ï¼›
+     * å¦åˆ™å°†æŠ›å‡ºä¸€ä¸ªé™„åŠ æŒ‡å®šæ¶ˆæ¯çš„å¼‚å¸¸.
      *
      * <pre>Validate.notEmpty(myArray, "The array must not be empty");</pre>
      *
-     * @param <T> Êı×éÀàĞÍ
-     * @param array  ĞèÒª¼ì²âµÄÊı×é, Í¨¹ıÕâ¸ö·½·¨ÑéÖ¤²»Îª¿Õ
-     * @param message  ¼ì²âÎª{@code null}¶ÔÏóÅ×³öµÄÏûÏ¢, ¸Ã²ÎÊı²»ÄÜÎªnull
-     * @param values  ¸ñÊ½»¯µÄÒì³£ÏûÏ¢£¨¿ÉÑ¡£©, ²»Ìá³«Ê¹ÓÃ¿ÕÊı×é
-     * @return ±»ÑéÖ¤µÄÊı×é (µ÷ÓÃ·½·¨Á´ÖĞÓÀÔ¶²»Îª {@code null})
-     * @throws NullPointerException Èç¹ûÊı×éÎª {@code null}
-     * @throws IllegalArgumentException Èç¹ûÊı×é³¤¶ÈÎªÁã
+     * @param <T> æ•°ç»„ç±»å‹
+     * @param array  éœ€è¦æ£€æµ‹çš„æ•°ç»„, é€šè¿‡è¿™ä¸ªæ–¹æ³•éªŒè¯ä¸ä¸ºç©º
+     * @param message  æ£€æµ‹ä¸º{@code null}å¯¹è±¡æŠ›å‡ºçš„æ¶ˆæ¯, è¯¥å‚æ•°ä¸èƒ½ä¸ºnull
+     * @param values  æ ¼å¼åŒ–çš„å¼‚å¸¸æ¶ˆæ¯ï¼ˆå¯é€‰ï¼‰, ä¸æå€¡ä½¿ç”¨ç©ºæ•°ç»„
+     * @return è¢«éªŒè¯çš„æ•°ç»„ (è°ƒç”¨æ–¹æ³•é“¾ä¸­æ°¸è¿œä¸ä¸º {@code null})
+     * @throws NullPointerException å¦‚æœæ•°ç»„ä¸º {@code null}
+     * @throws IllegalArgumentException å¦‚æœæ•°ç»„é•¿åº¦ä¸ºé›¶
      * @see #notEmpty(Object[])
      */
     public static <T> T[] notEmpty(final T[] array, final String message, final Object... values) {
