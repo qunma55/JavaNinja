@@ -12,7 +12,15 @@ import com.lambdaworks.redis.api.sync.RedisCommands;
 public class Connection {
 
   static StatefulRedisConnection getConnection(String host, int port) {
-    RedisClient client = RedisClient.create(RedisURI.create("redis://" + host + ":" + port + ""));
+    RedisURI redisURI = RedisURI.create("redis://" + host + ":" + port + "");
+    RedisClient client = RedisClient.create(redisURI);
+    return client.connect();
+  }
+
+  static StatefulRedisConnection getConnection(String host, int port, String password) {
+    RedisURI redisURI = RedisURI.create("redis://" + host + ":" + port + "");
+    redisURI.setPassword(password);
+    RedisClient client = RedisClient.create(redisURI);
     return client.connect();
   }
 
