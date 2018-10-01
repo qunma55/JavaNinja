@@ -1,6 +1,7 @@
 package org.ashone.redis;
 
 import com.google.common.math.LongMath;
+import com.lambdaworks.redis.RedisCommandExecutionException;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import org.ashone.BaseConstance;
 
@@ -12,12 +13,12 @@ public class CacheCounter {
   private ArrayList<Long> precisions = new ArrayList<>();
   private RedisCommands<String, String> commands;
 
-  CacheCounter(String host, int port) {
+  public CacheCounter(String host, int port) {
     commands = Connection.getSyncCommands(Connection.getConnection(host, port));
     initPrecisions();
   }
 
-  CacheCounter(String host, int port, String password) {
+  public CacheCounter(String host, int port, String password) {
     commands = Connection.getSyncCommands(Connection.getConnection(host, port, password));
     initPrecisions();
   }
@@ -41,17 +42,17 @@ public class CacheCounter {
   /**
    * 计数器自增
    *
-   * @param name  计数分组名称
-   * @param id    计数分组ID
+   * @param group 计数分组名称
+   * @param tag   计数分组ID
    * @param count 增加数
    */
-  public void plusCount(String name, String id, int count) {
+  public void plusCount(String group, String tag, int count) throws RedisCommandExecutionException {
     Long millis = System.currentTimeMillis();
     for (Long precision : precisions) {
       // 当前所在的时间片
-      long precisionNow = LongMath.divide(millis, precision, RoundingMode.DOWN);
-      String key = precision + ":" + id;
-      commands.hincrby(name + ":count:" + key, precisionNow + "", count);
+      long precisionNow = LongMath.divide(millis, precision, RoundingMode.DOWN) * precision;
+      String key = precision + ":" + tag;
+      commands.hincrby(group + ":count:" + key, precisionNow + "", count);
     }
   }
 }
