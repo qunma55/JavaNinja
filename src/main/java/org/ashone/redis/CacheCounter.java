@@ -9,12 +9,20 @@ import java.util.ArrayList;
 
 public class CacheCounter {
 
-  private ArrayList<Long> precisions = new ArrayList<Long>();
+  private ArrayList<Long> precisions = new ArrayList<>();
   private RedisCommands<String, String> commands;
 
   CacheCounter(String host, int port) {
     commands = Connection.getSyncCommands(Connection.getConnection(host, port));
+    initPrecisions();
+  }
 
+  CacheCounter(String host, int port, String password) {
+    commands = Connection.getSyncCommands(Connection.getConnection(host, port, password));
+    initPrecisions();
+  }
+
+  private void initPrecisions() {
     precisions.add(BaseConstance.DAY_MILLIS);
     precisions.add(BaseConstance.HOUR_MILLIS);
     precisions.add(BaseConstance.MINUTE_MILLIS);
@@ -32,8 +40,9 @@ public class CacheCounter {
 
   /**
    * 计数器自增
-   * @param name 计数分组名称
-   * @param id 计数分组ID
+   *
+   * @param name  计数分组名称
+   * @param id    计数分组ID
    * @param count 增加数
    */
   public void plusCount(String name, String id, int count) {
