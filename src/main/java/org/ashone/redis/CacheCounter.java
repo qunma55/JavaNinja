@@ -7,7 +7,6 @@ import org.ashone.BaseConstance;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CacheCounter {
@@ -96,7 +95,15 @@ public class CacheCounter {
     return commands.hgetall(key);
   }
 
-  public void cleanCounter() {
-    
+  /**
+   * <p>
+   * 清理旧的计数器
+   * </p>
+   *
+   * @param precision 时间分片大小
+   * @param number    保留数量
+   */
+  public void cleanCounter(String precision, int number) {
+    // TODO
   }
 }
