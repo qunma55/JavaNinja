@@ -32,7 +32,7 @@ public class FlowLimitation {
    * @return true表示允许执行动作，反之则不允许
    */
   public boolean isActionAllowed(String principal, String actionKey, int period, int allowedMaxCount) {
-    String key = String.format("hist:%s:%s", principal, actionKey);
+    String key = String.format("action:%s:%s", principal, actionKey);
     long now = System.currentTimeMillis();
     // 添加一条动作
     commands.zadd(key, now, now + "");
@@ -40,6 +40,7 @@ public class FlowLimitation {
     commands.zremrangebyscore(key, Range.create(0, now - period * 1000));
     // 获取窗口内的记录数量
     Long count = commands.zcard(key);
+    // 时间滑动窗口过期（需要考虑网络时延），这里简单地设置为1S
     commands.expire(key, period + 1);
     return count <= allowedMaxCount;
   }
