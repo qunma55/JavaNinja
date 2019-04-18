@@ -1,5 +1,8 @@
 package org.ashone.redis;
 
+//
+// 使用Redis实现一般计数器功能
+//
 import com.google.common.math.LongMath;
 import com.lambdaworks.redis.RedisCommandExecutionException;
 import com.lambdaworks.redis.api.sync.RedisCommands;
@@ -10,20 +13,15 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CacheCounter {
-
   private ArrayList<Long> precisions = new ArrayList<>();
   private RedisCommands<String, String> commands;
 
-  public CacheCounter(String host, int port) {
-    commands = Connection.getSyncCommands(Connection.getConnection(host, port));
+  public CacheCounter() {
+    commands = Connection.getSyncCommands(Connection.getConnection());
     initPrecisions();
   }
 
-  public CacheCounter(String host, int port, String password) {
-    commands = Connection.getSyncCommands(Connection.getConnection(host, port, password));
-    initPrecisions();
-  }
-
+  /** 默认初始化分片大小，分别未分钟，小时，天，月 可通过setPrecision方法增加其他分片 */
   private void initPrecisions() {
     precisions.add(BaseConstance.DAY_MILLIS);
     precisions.add(BaseConstance.HOUR_MILLIS);
@@ -32,9 +30,7 @@ public class CacheCounter {
   }
 
   /**
-   * <p>
    * 为计数器新增自定义时间分片单位
-   * </p>
    *
    * @param precision 时间分片大小，单位为秒
    */
@@ -43,12 +39,10 @@ public class CacheCounter {
   }
 
   /**
-   * <p>
-   * 计数器自增
-   * </P>
+   * 计数器增加
    *
    * @param group 计数分组名称
-   * @param tag   计数分组ID
+   * @param tag 计数分组ID
    * @param count 增加数
    */
   public void plusCount(String group, String tag, int count) throws RedisCommandExecutionException {
@@ -63,31 +57,28 @@ public class CacheCounter {
     }
   }
 
-
   /**
-   * <p>
    * 得到计数器的值
-   * </P>
    *
-   * @param group     计数器分组名称
-   * @param tag       计数器分组ID
+   * @param group 计数器分组名称
+   * @param tag 计数器分组ID
    * @param precision 时间分片
-   * @param timestamp 时间戳
+   * @param timestamp 时间戳，可为任意时间点，取该时间点作为参考点
    * @return 当前计数器的值
    */
-  public long getCounter(String group, String tag, String precision, String timestamp) {
+  public long getCounter(String group, String tag, String timestamp, long precision) {
     String key = group + ":count:" + precision + ":" + tag;
-    String count = commands.hget(key, timestamp);
+    // 获取设置的时间戳对应时间片
+    long pn = LongMath.divide(Long.parseLong(timestamp), precision, RoundingMode.DOWN) * precision;
+    String count = commands.hget(key, pn + "");
     return count != null ? Long.parseLong(count) : 0;
   }
 
   /**
-   * <p>
    * 获取所有计数器的值
-   * </P>
    *
-   * @param group     计数器分组名称
-   * @param tag       计数器分组ID
+   * @param group 计数器分组名称
+   * @param tag 计数器分组ID
    * @param precision 时间分片
    * @return 所有计数器的值
    */
@@ -97,12 +88,10 @@ public class CacheCounter {
   }
 
   /**
-   * <p>
    * 清理旧的计数器
-   * </p>
    *
    * @param precision 时间分片大小
-   * @param number    保留数量
+   * @param number 保留数量
    */
   public void cleanCounter(String precision, int number) {
     // TODO
